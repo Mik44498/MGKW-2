@@ -2,15 +2,17 @@ grammar Calculator;
 
 
 expression: multiplyingExpression ((PLUS | MINUS) multiplyingExpression)*;
-multiplyingExpression: integralExpression ((TIMES | DIV) integralExpression)*;
-integralExpression: MINUS INT | INT;
+multiplyingExpression: powExpression ((TIMES | DIV) powExpression)*;
+powExpression: integralExpression ((POW integralExpression | SQRT) )*;
+integralExpression: MINUS DOUBLE | DOUBLE;
 
 
-INT: [0-9]+ ;
+DOUBLE: ('0' .. '9') + ('.' ('0' .. '9') +)? ;
 DOT: '.';
 TIMES: '*' ;
 DIV: '/' ;
 POW: '^';
+SQRT:'#';
 PLUS: '+' ;
 MINUS: '-' ;
 INTEGRAL: 'cal';
