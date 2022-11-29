@@ -3,8 +3,8 @@ grammar Calculator;
 
 expression: multiplyingExpression ((PLUS | MINUS) multiplyingExpression)*;
 multiplyingExpression: powExpression ((TIMES | DIV) powExpression)*;
-powExpression: cstExpression ((POW cstExpression | SQRT) )*;
-cstExpression: integralExpression (COS | SIN | TAN)*;
+powExpression: cstExpression ((POW | SQRT cstExpression ) )*;
+cstExpression: integralExpression (COS | SIN | TAN )*;
 integralExpression: MINUS DOUBLE | DOUBLE;
 
 
