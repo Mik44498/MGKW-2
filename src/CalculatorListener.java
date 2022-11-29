@@ -37,6 +37,16 @@ public interface CalculatorListener extends ParseTreeListener {
 	 */
 	void exitPowExpression(CalculatorParser.PowExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#cstExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterCstExpression(CalculatorParser.CstExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#cstExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitCstExpression(CalculatorParser.CstExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CalculatorParser#integralExpression}.
 	 * @param ctx the parse tree
 	 */

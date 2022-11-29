@@ -8,36 +8,37 @@ public class Calculator extends CalculatorBaseListener {
     private final LinkedList<Double> secondStack = new LinkedList<>();
 
     private final LinkedList<Double> thirdStack = new LinkedList<>();
+    private final LinkedList<Double> fourthStack = new LinkedList<>();
 
     public Double getResult() {
-        return thirdStack.pop();
+        return fourthStack.pop();
     }
 
     @Override
     public void exitExpression(CalculatorParser.ExpressionContext ctx) {
-        Double result = thirdStack.removeLast();
+        Double result = fourthStack.removeLast();
         for (int i = 1; i < ctx.getChildCount(); i = i + 2) {
             if (symbolEquals(ctx.getChild(i), CalculatorParser.PLUS)) {
-                result = result + thirdStack.removeLast();
+                result = result + fourthStack.removeLast();
             } else {
-                result = result - thirdStack.removeLast();
+                result = result - fourthStack.removeLast();
             }
         }
-        thirdStack.push(result);
+        fourthStack.push(result);
         System.out.println("Expression: \"" + ctx.getText() + "\" -> " + result);
     }
 
     @Override
     public void exitMultiplyingExpression(CalculatorParser.MultiplyingExpressionContext ctx) {
-        Double result = secondStack.removeLast();
+        Double result = thirdStack.removeLast();
         for (int i = 1; i < ctx.getChildCount(); i = i + 2) {
             if (symbolEquals(ctx.getChild(i), CalculatorParser.TIMES)) {
-                result = result * secondStack.removeLast();
+                result = result * thirdStack.removeLast();
             } else {
-                result = result / secondStack.removeLast();
+                result = result / thirdStack.removeLast();
             }
         }
-        thirdStack.push(result);
+        fourthStack.push(result);
         System.out.println("MultiplyingExpression: \"" + ctx.getText() + "\" -> " + result);
     }
 
@@ -47,18 +48,33 @@ public class Calculator extends CalculatorBaseListener {
 
     @Override
     public  void exitPowExpression(CalculatorParser.PowExpressionContext ctx) {
-        Double result = firstStack.removeLast();
+        Double result = secondStack.removeLast();
         for (int i = 1; i < ctx.getChildCount(); i = i + 2) {
             if (symbolEquals(ctx.getChild(i), CalculatorParser.POW)) {
-                result = Math.pow(result, firstStack.removeLast());
+                result = Math.pow(result, secondStack.removeLast());
             } else {
                 result = Math.sqrt(result);
             }
         }
-        secondStack.push(result);
+        thirdStack.push(result);
         System.out.println("PowExpression: \"" + ctx.getText() + "\" -> " + result);
     }
 
+    @Override
+    public  void exitCstExpression(CalculatorParser.CstExpressionContext ctx) {
+        Double result = firstStack.removeLast();
+        for (int i = 1; i < ctx.getChildCount(); i = i + 2) {
+            if (symbolEquals(ctx.getChild(i), CalculatorParser.COS)) {
+                result = Math.cos(result);
+            } else if(symbolEquals(ctx.getChild(i), CalculatorParser.TAN)) {
+                result = Math.tan(result);
+            } else {
+                result = Math.sin(result);
+            }
+        }
+        secondStack.push(result);
+        System.out.println("CstExpression: \"" + ctx.getText() + "\" -> " + result);
+    }
     @Override
     public void exitIntegralExpression(CalculatorParser.IntegralExpressionContext ctx) {
         double value = Double.parseDouble(ctx.DOUBLE().getText());
